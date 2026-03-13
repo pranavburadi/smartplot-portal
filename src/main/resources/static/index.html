@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPlot Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="page-shell">
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="hero">
+        <div class="hero-copy reveal">
+            <div class="eyebrow">SmartPlot Portal</div>
+            <h1>Manage users and plots with a frontend that feels launch-ready.</h1>
+            <p class="hero-text">
+                Sign up, log in, create plots, and inspect live records from your Spring Boot + MySQL backend in one clean experience.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <span class="stat-label">Backend</span>
+                    <strong>Spring Boot 3</strong>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Database</span>
+                    <strong>MySQL Live</strong>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Plots</span>
+                    <strong>Live Inventory</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-panel reveal">
+            <div class="hero-panel-inner">
+                <p class="panel-kicker">Portal Pulse</p>
+                <div class="pulse-row">
+                    <span>Total records</span>
+                    <strong id="userCount">0</strong>
+                </div>
+                <div class="pulse-bar">
+                    <span id="pulseFill"></span>
+                </div>
+                <p class="panel-note" id="panelNote">Waiting for database activity.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="content-grid">
+        <section class="auth-panel reveal">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">Access</p>
+                    <h2>Create an account or sign in</h2>
+                </div>
+                <div class="auth-actions">
+                    <div class="tab-switch" aria-label="Authentication tabs">
+                        <button class="tab-button active" data-tab="signup" type="button">Sign Up</button>
+                        <button class="tab-button" data-tab="login" type="button">Log In</button>
+                    </div>
+                    <button id="logoutButton" class="ghost-button hidden" type="button">Log Out</button>
+                </div>
+            </div>
+
+            <form id="signupForm" class="form-panel active" novalidate>
+                <label>
+                    <span>Name</span>
+                    <input id="signupName" name="name" type="text" placeholder="John Carter" required>
+                </label>
+                <label>
+                    <span>Email</span>
+                    <input id="signupEmail" name="email" type="email" placeholder="john@email.com" required>
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input id="signupPassword" name="password" type="password" placeholder="Minimum 6 characters" required>
+                </label>
+                <label>
+                    <span>Phone</span>
+                    <input id="signupPhone" name="phone" type="text" placeholder="9876543210" required>
+                </label>
+                <button class="primary-button" type="submit">Create Account</button>
+                <p class="feedback" id="signupFeedback"></p>
+            </form>
+
+            <form id="loginForm" class="form-panel" novalidate>
+                <label>
+                    <span>Email</span>
+                    <input id="loginEmail" name="email" type="email" placeholder="john@email.com" required>
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input id="loginPassword" name="password" type="password" placeholder="Enter your password" required>
+                </label>
+                <button class="primary-button" type="submit">Log In</button>
+                <p class="feedback" id="loginFeedback"></p>
+            </form>
+        </section>
+
+        <section class="dashboard-panel reveal">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">Directory</p>
+                    <h2>Live users from your backend</h2>
+                </div>
+                <button id="refreshUsers" class="ghost-button" type="button">Refresh</button>
+            </div>
+
+            <div class="dashboard-strip">
+                <div class="mini-card">
+                    <span class="mini-label">Last action</span>
+                    <strong id="lastAction">App loaded</strong>
+                </div>
+                <div class="mini-card">
+                    <span class="mini-label">Signed in user</span>
+                    <strong id="currentUser">None</strong>
+                </div>
+            </div>
+
+            <div id="usersEmpty" class="empty-state">
+                <h3>No users yet</h3>
+                <p>Your first successful signup will appear here automatically.</p>
+            </div>
+
+            <div id="usersGrid" class="users-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="plot-panel reveal">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">Inventory</p>
+                    <h2 id="plotFormTitle">Create and track plots</h2>
+                </div>
+                <button id="refreshPlots" class="ghost-button" type="button">Refresh</button>
+            </div>
+
+            <form id="plotForm" class="form-panel active plot-form" novalidate>
+                <input id="editingPlotId" type="hidden">
+                <label>
+                    <span>Plot Number</span>
+                    <input id="plotNumber" name="plotNumber" type="text" placeholder="SP-101" required>
+                </label>
+                <label>
+                    <span>Owner Name</span>
+                    <input id="ownerName" name="ownerName" type="text" placeholder="Aarav Mehta" required>
+                </label>
+                <label>
+                    <span>Location</span>
+                    <input id="plotLocation" name="location" type="text" placeholder="Phase 1, North Block" required>
+                </label>
+                <label>
+                    <span>Area (sqft)</span>
+                    <input id="areaSqft" name="areaSqft" type="number" min="100" placeholder="2400" required>
+                </label>
+                <label>
+                    <span>Price</span>
+                    <input id="plotPrice" name="price" type="number" min="1" step="0.01" placeholder="1250000" required>
+                </label>
+                <label>
+                    <span>Status</span>
+                    <select id="plotStatus" name="status">
+                        <option value="AVAILABLE">AVAILABLE</option>
+                        <option value="RESERVED">RESERVED</option>
+                        <option value="SOLD">SOLD</option>
+                    </select>
+                </label>
+                <div class="form-actions">
+                    <button id="plotSubmitButton" class="primary-button" type="submit">Create Plot</button>
+                    <button id="cancelEditButton" class="ghost-button hidden" type="button">Cancel Edit</button>
+                </div>
+                <p class="feedback" id="plotFeedback"></p>
+            </form>
+        </section>
+
+        <section class="plots-board reveal">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">Portfolio</p>
+                    <h2>Live plot inventory</h2>
+                </div>
+                <div class="dashboard-strip compact-strip">
+                    <div class="mini-card">
+                        <span class="mini-label">Total plots</span>
+                        <strong id="plotCount">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plot-toolbar">
+                <label class="toolbar-field">
+                    <span>Search</span>
+                    <input id="plotSearch" type="text" placeholder="Search plot, owner, location">
+                </label>
+                <label class="toolbar-field">
+                    <span>Status</span>
+                    <select id="plotFilterStatus">
+                        <option value="ALL">ALL</option>
+                        <option value="AVAILABLE">AVAILABLE</option>
+                        <option value="RESERVED">RESERVED</option>
+                        <option value="SOLD">SOLD</option>
+                    </select>
+                </label>
+                <button id="clearPlotFilters" class="ghost-button" type="button">Reset</button>
+            </div>
+
+            <div id="plotsEmpty" class="empty-state">
+                <h3>No plots yet</h3>
+                <p>Create your first plot to start building inventory.</p>
+            </div>
+
+            <div id="plotsGrid" class="plots-grid" aria-live="polite"></div>
+        </section>
+    </main>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>

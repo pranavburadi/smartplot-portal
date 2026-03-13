@@ -1,0 +1,14 @@
+target/
+.idea/
+.classpath
+.project
+.settings/
+.factorypath
+.vscode/
+*.log
+*.class
+*.jar
+*.war
+*.ear
+.env
+application-local.properties
