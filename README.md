@@ -43,10 +43,10 @@ Example local values:
 
 ```text
 DB_URL=jdbc:mysql://localhost:3306/smart_plot_portal
-DB_USERNAME=root
-DB_PASSWORD=root123
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_db_password
 JPA_DDL_AUTO=update
-JPA_SHOW_SQL=true
+JPA_SHOW_SQL=false
 PORT=8081
 JWT_SECRET=replace-with-a-long-random-secret-at-least-32-characters
 JWT_EXPIRATION_MS=86400000
@@ -108,20 +108,22 @@ The frontend stores the JWT token in browser `localStorage` after login/signup a
 
 ## Deploying for Others to Use
 
-### Option 1: Deploy with Render or Railway
+### Option 1: Deploy with Render and Railway
 
 1. Push this project to GitHub.
-2. Create a hosted MySQL database.
-3. Create a new web service from the repo.
+2. Create a hosted MySQL database on Railway.
+3. Create a new web service on Render from the repo.
 4. Set environment variables:
    - `DB_URL`
    - `DB_USERNAME`
    - `DB_PASSWORD`
    - `JWT_SECRET`
    - `JWT_EXPIRATION_MS`
-   - `PORT`
+    - `PORT`
    - optionally `JPA_DDL_AUTO`
-5. Deploy and share the public URL.
+   - optionally `JPA_SHOW_SQL`
+5. Set health check path to `/health`
+6. Deploy and share the public URL.
 
 ### Option 2: Docker
 
